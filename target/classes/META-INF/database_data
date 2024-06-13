@@ -1,0 +1,84 @@
+USE MASTER
+GO
+
+IF DB_ID('quanlybanhang') IS NOT NULL BEGIN
+DROP DATABASE quanlybanhang
+END
+GO
+
+CREATE DATABASE quanlybanhang
+GO
+
+USE quanlybanhang
+GO
+
+CREATE TABLE danhmuc
+(
+	madm			nvarchar(50)	PRIMARY KEY NOT NULL,
+	tendanhmuc		nvarchar(255)	NULL,
+	ghichu			ntext			NULL
+)	
+GO
+
+CREATE TABLE sanpham
+(
+	masp			nvarchar(50)	PRIMARY KEY NOT NULL,
+	tensp			nvarchar(255)	NULL,
+	giasp			decimal(12,3)	NULL,
+	mota			ntext			NULL,
+	hinh			nvarchar(255)	NULL,
+	soluong			int				NULL,
+	madm			nvarchar(50)	FOREIGN KEY REFERENCES danhmuc(madm)
+)
+GO
+
+CREATE TABLE [user]
+(
+	id				int				PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	username		nvarchar(50)	NOT NULL,
+	[password]		nvarchar(50)	NULL,
+	fullname		nvarchar(50)	NULL,
+	email			nvarchar(50)	NULL,
+	phone			nchar(10)		NULL,
+	[role]			int				NULL,
+)
+GO
+
+CREATE TABLE hoadon
+(
+	id				int				PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	userId			int				FOREIGN KEY REFERENCES [user](id),
+	tongtien		decimal(12,3)	NOT NULL,
+	dienthoai		varchar(11)		NOT NULL,
+	diachi			nvarchar(255)	NOT NULL
+)
+GO
+
+
+
+
+
+CREATE TABLE hoadonchitiet
+(
+	id				int				PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	mahd			int				FOREIGN KEY REFERENCES hoadon(id),
+	masp			nvarchar(50)	FOREIGN KEY REFERENCES sanpham(masp),
+	soluong			int				NOT NULL,
+	gia				decimal(12,3)	NOT NULL
+)	
+GO
+
+
+
+INSERT INTO [user](username, [password], fullname, email, phone, [role]) VALUES
+('Anha', '111', N'Nguyễn Ngọc Anh', 'anh@gmail.com', '0908543424', 1),
+('duytn', '222', N'Trần Nhật Duy', 'duytn@fpt.edu.vn', '0988665688', 0)
+GO
+
+Go
+
+INSERT INTO danhmuc(madm, tendanhmuc, ghichu) VALUES 
+('dm01', N'Cà phê',null),
+('dm02', N'Trà trái cây', NULL),
+('dm03', N'Trà sữa', NULL)
+Go
